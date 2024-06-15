@@ -41,7 +41,11 @@ public static class DependencyInjection
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+        {
+            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator));
+            // options.AddPolicy("foo", configurePolicy: policy => policy.RequireRole("bar"));
+        });
+
 
         return services;
     }

@@ -13,14 +13,20 @@ public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, TodosVm>
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetTodosQueryHandler(IApplicationDbContext context, IMapper mapper)
+    private readonly IUser _currentUserService;
+
+    public GetTodosQueryHandler(IApplicationDbContext context, IMapper mapper, IUser currentUserService)
     {
         _context = context;
         _mapper = mapper;
+        _currentUserService = currentUserService;
     }
 
     public async Task<TodosVm> Handle(GetTodosQuery request, CancellationToken cancellationToken)
     {
+        var roles = _currentUserService.Roles;
+        var userId = _currentUserService.Id;
+
         return new TodosVm
         {
             PriorityLevels = Enum.GetValues(typeof(PriorityLevel))
